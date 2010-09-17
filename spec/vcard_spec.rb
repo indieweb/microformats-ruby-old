@@ -7,36 +7,51 @@ describe Microformats::Vcard do
   
   describe "name" do
     it "should wrap a string with fn class, default to span" do
-      @vcard.name("John Doe").should == "<span class='fn'>John Doe</span>"
+      @vcard.name("John Doe").should == "<span class='fn' itemprop='name'>John Doe</span>"
     end
     
     it "should use the given tag" do
-      @vcard.name("John Doe", :tag => :strong).should == "<strong class='fn'>John Doe</strong>"
+      @vcard.name("John Doe", :tag => :strong).should == "<strong class='fn' itemprop='name'>John Doe</strong>"
     end
   end
   
   describe "company" do
     it "should wrap a string with org class, default to span" do
-      @vcard.company("Acme Co.").should == "<span class='org'>Acme Co.</span>"
+      @vcard.company("Acme Co.").should == "<span class='org' itemprop='affiliation'>Acme Co.</span>"
     end
     
     it "should use the given tag" do
-      @vcard.company("Acme Co.", :tag => :strong).should == "<strong class='org'>Acme Co.</strong>"
+      @vcard.company("Acme Co.", :tag => :strong).should == "<strong class='org' itemprop='affiliation'>Acme Co.</strong>"
     end
   end
   
   describe "url" do
     it "should default to a tag with url class, using the URL for text and href" do
-      @vcard.url("http://google.com").should == "<a class='url' href='http://google.com'>http://google.com</a>"
+      @vcard.url("http://google.com").should == "<a class='url' href='http://google.com' itemprop='url'>http://google.com</a>"
     end
     
     it "should use given href" do
-      @vcard.url('Google', :href => "http://google.com").should == "<a class='url' href='http://google.com'>Google</a>"
+      @vcard.url('Google', :href => "http://google.com").should == "<a class='url' href='http://google.com' itemprop='url'>Google</a>"
     end
     
     it "should use given tag" do
-      @vcard.url('http://google.com', :tag => :strong).should == "<strong class='url'>http://google.com</strong>"
+      @vcard.url('http://google.com', :tag => :strong).should == "<strong class='url' itemprop='url'>http://google.com</strong>"
     end
+  end
+  
+  describe "photo" do
+    it "should create an image tag using the passed string as the src, adding itemprop photo" do
+      @vcard.photo("/images/me.png").should == "<img itemprop='photo' src='/images/me.png' />"
+    end
+    
+    it "should use :size option to set width and height" do
+      @vcard.photo("/images/me.png", :size => "200x100").should == "<img height='100' itemprop='photo' src='/images/me.png' width='200' />"
+    end
+    
+    it "should pass through options" do
+      @vcard.photo("/images/me.png", :height => 100, :width => 200).should == "<img height='100' itemprop='photo' src='/images/me.png' width='200' />"
+    end
+    
   end
   
   describe "phone" do
