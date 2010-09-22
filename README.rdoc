@@ -15,6 +15,12 @@ the future, Google plans on consuming microdata and making it
 directly searchable, which yields all sorts of new potential
 for relevant results.
 
+== Installation
+
+Install the Microformats gem as usual:
+
+  gem install microformats
+
 == Usage: Vcards
 
 You can easily markup a person and/or organization using the
