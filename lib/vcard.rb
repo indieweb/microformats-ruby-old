@@ -40,6 +40,12 @@ class Microformats::Vcard
     end
   end
 
+  def download_link(url, opts = {})
+    str = opts.delete(:text) || "Download vCard"
+    new_url = "http://h2vx.com/vcf/" + url.gsub("http://", '')
+    content_tag(:a, str, :href => new_url, :type => 'text/directory')
+  end
+
   def content_tag(tag, content, opts={})
     attrs = opts.inject([]) do |out, tuple|
       k,v = tuple

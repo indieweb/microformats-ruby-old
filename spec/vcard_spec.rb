@@ -90,4 +90,21 @@ describe Microformats::Vcard do
       out.should == "<a class='email' href='mailto:john@doe.com'><span class='type'>Work</span> john@doe.com</a>"
     end
   end
+  
+  describe "download_link" do
+    it "should output a link to h2vx.com using the passed url" do
+      out = @vcard.download_link('mydomain.com/page')
+      out.should == "<a href='http://h2vx.com/vcf/mydomain.com/page' type='text/directory'>Download vCard</a>"
+    end
+    
+    it "should strip the protocol from a passed url" do
+      out = @vcard.download_link('http://mydomain.com/page')
+      out.should == "<a href='http://h2vx.com/vcf/mydomain.com/page' type='text/directory'>Download vCard</a>"
+    end
+    
+    it "should use :text option as text node if present" do
+      out = @vcard.download_link('mydomain.com/page', :text => "Download Me Now")
+      out.should == "<a href='http://h2vx.com/vcf/mydomain.com/page' type='text/directory'>Download Me Now</a>"
+    end
+  end
 end
