@@ -1,1 +1,1 @@
-require File.join(File.dirname(__FILE__), '..', 'microformats.rb')
+require File.join(File.dirname(__FILE__), '..', 'lib', 'microformats.rb')

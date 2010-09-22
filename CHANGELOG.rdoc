@@ -1,0 +1,6 @@
+= Microformats CHANGELOG
+
+== Version 0.1
+ * Initial Implementation of Vcard
+ * Implements hCard microformat
+ * Implements Google's Person microdata http://www.data-vocabulary.org/Person/
