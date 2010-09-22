@@ -1,4 +1,4 @@
-= MICROFORMATS
+= Microformats
 
 <em>Created by Chris Powers, September 11, 2010</em>
 
@@ -21,17 +21,17 @@ Install the Microformats gem as usual:
 
   gem install microformats
 
-== Usage: Vcards
+== Usage: vCards
 
 You can easily markup a person and/or organization using the
-'vcard' helper method. This will use both the hCard Microformat
-and the http://www.data-vocabulary.org/Person/ microdata.
+<tt>vcard</tt> helper method. This will use both the hCard Microformat
+and the http://www.data-vocabulary.org/Person microdata.
 
-<strong>PLEASE NOTE:</strong> These two microdata standards do
+<b>PLEASE NOTE:</b> These two microdata standards do
 not support the same fields. For example, hCard gives a person
 telephone numbers and email addresses. The Person microdata only
-gives organizations a single telephone number and has no knowledge
-of emails. It does, however, have a photo field, which is missing
+gives organizations a single telephone number and has no support
+for email. It does, however, have a photo field, which is missing
 from hCard.
 
 To use it, first include the Microformats::Helper mixin into your view
@@ -93,3 +93,14 @@ currently on, so this is a quick way to do this in Rails:
 
   <%= card.download_link request.request_uri %>
 
+== Resources
+
+* http://www.data-vocabulary.org
+* http://microformats.org
+
+== Care to Help?
+
+There are still a lot of standards that need to be implemented into
+this library, including but not limited to: Events, Products, Reviews,
+Organizations. I will continue to work on these, but I'd be happy to
+accept pull requests!
