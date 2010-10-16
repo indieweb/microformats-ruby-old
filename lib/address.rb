@@ -1,4 +1,9 @@
 class Microformats::Address
+  def type(str, opts = {})
+    inner = content_tag(:span, '', :class => 'value-title', :title => str)
+    content_tag(:span, inner, :class => 'type')
+  end
+
   def street(str, opts = {})
     content_tag(opts[:tag] || :span, str, :class => 'street-address', :itemprop => 'street-address')
   end

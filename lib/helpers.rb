@@ -11,7 +11,7 @@ module Microformats::Helpers
   # i.e. not rely on using concat
   def vcard_address(opts = {}, &block)
     address = Microformats::Address.new
-    type = opts[:type] ? address.content_tag(:span, opts[:type], :class => 'type') : nil
+    type = opts[:type] ? address.type(opts[:type]) : nil
     concat "<div class='adr' itemscope='itemscope' itemtype='http://data-vocabulary.org/Address'>\n"
     concat type if type
     block.call(address)

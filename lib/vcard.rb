@@ -27,12 +27,22 @@ class Microformats::Vcard
   end
 
   def phone(str, opts = {})
-    type = opts[:type] ? content_tag(:span, opts[:type], :class => 'type') + ' ' : ''
+    type = if opts[:type].to_s != ''
+      type_inner_span = content_tag(:span, '', :class => 'value-title', :title => opts[:type])
+      content_tag(:span, type_inner_span, :class => 'type')
+    else
+      ''
+    end
     content_tag(opts[:tag] || :span, type + str, :class => 'tel')
   end
 
   def email(str, opts = {})
-    type = opts[:type] ? content_tag(:span, opts[:type], :class => 'type') + ' ' : ''
+    type = if opts[:type].to_s != ''
+      type_inner_span = content_tag(:span, '', :class => 'value-title', :title => opts[:type])
+      content_tag(:span, type_inner_span, :class => 'type')
+    else
+      ''
+    end
     if opts[:tag] == :a
       content_tag(:a, type + str, :class => 'email', :href => "mailto:#{str}")
     else

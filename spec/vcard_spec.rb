@@ -60,13 +60,13 @@ describe Microformats::Vcard do
     end
     
     it "should add a type span if given" do
-      out = @vcard.phone('123.456.7890', :type => 'Work')
-      out.should == "<span class='tel'><span class='type'>Work</span> 123.456.7890</span>"
+      out = @vcard.phone('123.456.7890', :type => 'work')
+      out.should == "<span class='tel'><span class='type'><span class='value-title' title='work'></span></span>123.456.7890</span>"
     end
     
     it "should use the given tag" do
-      out = @vcard.phone('123.456.7890', :type => 'Work', :tag => :strong)
-      out.should == "<strong class='tel'><span class='type'>Work</span> 123.456.7890</strong>"
+      out = @vcard.phone('123.456.7890', :type => 'work', :tag => :strong)
+      out.should == "<strong class='tel'><span class='type'><span class='value-title' title='work'></span></span>123.456.7890</strong>"
     end
   end
   
@@ -76,18 +76,18 @@ describe Microformats::Vcard do
     end
     
     it "should add a type span if given" do
-      out = @vcard.email('john@doe.com', :type => 'Work')
-      out.should == "<span class='email'><span class='type'>Work</span> john@doe.com</span>"
+      out = @vcard.email('john@doe.com', :type => 'work')
+      out.should == "<span class='email'><span class='type'><span class='value-title' title='work'></span></span>john@doe.com</span>"
     end
     
     it "should use the given tag" do
-      out = @vcard.email('john@doe.com', :type => 'Work', :tag => :strong)
-      out.should == "<strong class='email'><span class='type'>Work</span> john@doe.com</strong>"
+      out = @vcard.email('john@doe.com', :type => 'work', :tag => :strong)
+      out.should == "<strong class='email'><span class='type'><span class='value-title' title='work'></span></span>john@doe.com</strong>"
     end
     
     it "should use mailto if using an 'a' tag" do
-      out = @vcard.email('john@doe.com', :type => 'Work', :tag => :a)
-      out.should == "<a class='email' href='mailto:john@doe.com'><span class='type'>Work</span> john@doe.com</a>"
+      out = @vcard.email('john@doe.com', :type => 'work', :tag => :a)
+      out.should == "<a class='email' href='mailto:john@doe.com'><span class='type'><span class='value-title' title='work'></span></span>john@doe.com</a>"
     end
   end
   

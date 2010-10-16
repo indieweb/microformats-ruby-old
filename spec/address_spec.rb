@@ -5,6 +5,12 @@ describe Microformats::Address do
     @address = Microformats::Address.new
   end
   
+  describe "type" do
+    it "should output the type string as a hidden value" do
+      @address.type('home').should == "<span class='type'><span class='value-title' title='home'></span></span>"
+    end
+  end
+  
   describe "street" do
     it "should wrap the string with street-address" do
       @address.street("123 Main").should == "<span class='street-address' itemprop='street-address'>123 Main</span>"

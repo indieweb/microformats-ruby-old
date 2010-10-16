@@ -1,5 +1,7 @@
 = Microformats
 
+<b>IN DEVELOPMENT, DON'T USE IT YET! (but it'll be pretty cool pretty soon)</b>
+
 <em>Created by Chris Powers, September 11, 2010</em>
 
 == Two Great Tastes, One Great Library

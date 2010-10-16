@@ -32,10 +32,10 @@ describe Microformats::Helpers do
     context "with type" do
       it "should wrap the block in an adr div and output the type" do
         @tester.should_receive(:do_something)
-        @tester.vcard_address :type => 'Work' do
+        @tester.vcard_address :type => 'work' do
           @tester.do_something
         end
-        @tester.output.should == "<div class='adr' itemscope='itemscope' itemtype='http://data-vocabulary.org/Address'>\n<span class='type'>Work</span></div>\n"
+        @tester.output.should == "<div class='adr' itemscope='itemscope' itemtype='http://data-vocabulary.org/Address'>\n<span class='type'><span class='value-title' title='work'></span></span></div>\n"
       end
     end
     

@@ -1,0 +1,12 @@
+<% vcard do |card| %>
+  My name is <%= card.name "Chris Powers" %>
+  and I'm working at <%= card.company "Obtiva" %>.
+  Check me out at <%= card.url "http://chrisjpowers.com" %>. <br />
+  My number is <%= card.phone "123.456.7890", :type => 'cell' %>
+  I live at:
+  <% card.address :type => 'Home' do |adr| %>
+    <%= adr.type "My House", :value => 'home' %>
+    <%= adr.street %><br />
+    <%= adr.city %>, <%= adr.state %> <%= adr.zip %>
+  <% end %>
+<% end %>
