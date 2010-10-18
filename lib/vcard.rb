@@ -52,6 +52,21 @@ class Microformats::Vcard
     end
   end
 
+  def coordinates(lat, lng, opts = {})
+    # <span class='geo' itemprop='geo' itemscope='itemscope' itemtype='http://data-vocabulary.org/Geo'>
+    # <meta content='37.774929' itemprop='latitude'></meta>
+    # <meta content='-122.419416' itemprop='longitude'></meta>
+    # <span class='latitude'><span class='value-title' title='37.774929'></span></span>
+    # <span class='longitude'><span class='value-title' title='-122.419416'></span></span>
+    # </span>
+    lat_meta = content_tag(:meta, '', :itemprop => 'latitude', :content => lat)
+    lng_meta = content_tag(:meta, '', :itemprop => 'longitude', :content => lng)
+    lat_span = content_tag(:span, content_tag(:span, '', :class => 'value-title', :title => lat), :class => 'latitude')
+    lng_span = content_tag(:span, content_tag(:span, '', :class => 'value-title', :title => lng), :class => 'longitude')
+    text = opts[:text] || ''
+    content_tag(:span, lat_meta + lng_meta + lat_span + lng_span + text, :class => 'geo', :itemprop => 'geo', :itemscope => 'itemscope', :itemtype => 'http://data-vocabulary.org/Geo')
+  end
+
   def download_link(url, opts = {})
     str = opts.delete(:text) || "Download vCard"
     new_url = "http://h2vx.com/vcf/" + url.gsub("http://", '')

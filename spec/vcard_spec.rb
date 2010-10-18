@@ -91,6 +91,18 @@ describe Microformats::Vcard do
     end
   end
   
+  describe "coordinates" do
+    it "should output a geo container with meta and spans for lat and long" do
+      out = @vcard.coordinates(37.774929, -122.419416)
+      out.should == "<span class='geo' itemprop='geo' itemscope='itemscope' itemtype='http://data-vocabulary.org/Geo'><meta content='37.774929' itemprop='latitude'></meta><meta content='-122.419416' itemprop='longitude'></meta><span class='latitude'><span class='value-title' title='37.774929'></span></span><span class='longitude'><span class='value-title' title='-122.419416'></span></span></span>"      
+    end
+    
+    it "should output text in .geo span if in options" do
+      out = @vcard.coordinates(37.774929, -122.419416, :text => "My Location")
+      out.should == "<span class='geo' itemprop='geo' itemscope='itemscope' itemtype='http://data-vocabulary.org/Geo'><meta content='37.774929' itemprop='latitude'></meta><meta content='-122.419416' itemprop='longitude'></meta><span class='latitude'><span class='value-title' title='37.774929'></span></span><span class='longitude'><span class='value-title' title='-122.419416'></span></span>My Location</span>"      
+    end
+  end
+  
   describe "download_link" do
     it "should output a link to h2vx.com using the passed url" do
       out = @vcard.download_link('mydomain.com/page')
