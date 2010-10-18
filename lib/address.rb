@@ -1,4 +1,6 @@
 class Microformats::Address
+  include Microformats::FormattingHelpers
+
   def type(str, opts = {})
     inner = content_tag(:span, '', :class => 'value-title', :title => str)
     content_tag(:span, inner, :class => 'type')
@@ -25,13 +27,4 @@ class Microformats::Address
     content_tag(opts[:tag] || :span, str, :class => 'country-name', :itemprop => 'country-name')
   end
 
-  def content_tag(tag, content, opts={})
-    attrs = opts.inject([]) do |out, tuple|
-      k,v = tuple
-      out << "#{k}='#{v}'"
-    end
-    attr_string = attrs.sort.join(' ')
-    open_tag = attr_string == '' ? tag : "#{tag} #{attr_string}"
-    "<#{open_tag}>#{content}</#{tag}>"
-  end
 end

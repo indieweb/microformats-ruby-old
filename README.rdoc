@@ -67,13 +67,13 @@ This will output the following markup:
     <img itemprop='photo' src='/images/me.jpg' width='200' height='300' />
     <span class='fn' itemprop='name'>John Doe</span>
     <a class='url' href='http://mydomain.com' itemprop='url'>Visit my Site</a>
-    <span class='tel'><span class='type'>Home</span> 999.888.7766</span>
-    <span class='tel'><span class='type'>Work</span> 111.222.3344</span>
-    <span class='email'><span class='type'>Home</span> me@mydomain.com</span>
+    <span class='tel'><span class='type'><span class='value-title' title='Home'></span></span>999.888.7766</span>
+    <span class='tel'><span class='type'><span class='value-title' title='Work'></span></span> 111.222.3344</span>
+    <span class='email'><span class='value-title' title='Home'></span>me@mydomain.com</span>
 
     I work at <span class='org' itemprop='affiliation'>Acme Co.</span>
     <div class='adr' itemscope='itemscope' itemtype='http://data-vocabulary.org/Address'>
-      <span class='type'>Work</span>
+      <span class='type'><span class='value-title' title='Work'></span></span>
       <span class='street-address' itemprop='street-address'>123 Main</span>
       <span class='locality' itemprop='locality'>Chicago</span>, <span class='region' itemprop='region'>IL</span> <span class='postal-code' itemprop='postal-code'>60010</span>
     </div>

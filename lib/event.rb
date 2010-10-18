@@ -1,7 +1,8 @@
 class Microformats::Event
+  include Microformats::FormattingHelpers
 
   def name(str, opts={})
-    content_tag(opts[:tag] || :span, str, :itemprop => 'summary')
+    content_tag(opts[:tag] || :span, str, :itemprop => 'summary', :class => 'summary')
   end
 
   def url(str, opts = {})
@@ -14,17 +15,42 @@ class Microformats::Event
     end
   end
 
-  def content_tag(tag, content, opts={})
-    attrs = opts.inject([]) do |out, tuple|
-      k,v = tuple
-      out << "#{k}='#{v}'"
-    end
-    attr_string = attrs.sort.join(' ')
-    open_tag = attr_string == '' ? tag : "#{tag} #{attr_string}"
-    if [:img].include?(tag)
-      "<#{open_tag} />"
-    else
-      "<#{open_tag}>#{content}</#{tag}>"
-    end
+  def photo(str, opts = {})
+    image_tag(str, opts.merge(:itemprop => 'photo'))
   end
+
+  def description(str, opts={})
+    content_tag(opts[:tag] || :span, str, :itemprop => 'description', :class => 'description')
+  end
+
+  def starts_at(time_or_str, opts={})
+    if time_or_str.is_a?(String)
+      time = Time.parse(time_or_str)
+      encoded_time = encode_time(time_or_str)
+      humanized_time = opts[:text] || time_or_str
+    else
+      encoded_time = encode_time(time_or_str)
+      humanized_time = opts[:text] || humanize_time(time_or_str)
+    end
+    inner_span = content_tag(:span, '', :class => 'value-title', :title => encoded_time)
+    content_tag(opts[:tag] || :time, inner_span + humanized_time, :itemprop => 'startDate', :class => 'dtstart', :datetime => encoded_time)
+  end
+
+  def ends_at(time_or_str, opts={})
+    if time_or_str.is_a?(String)
+      time = Time.parse(time_or_str)
+      encoded_time = encode_time(time_or_str)
+      humanized_time = opts[:text] || time_or_str
+    else
+      encoded_time = encode_time(time_or_str)
+      humanized_time = opts[:text] || humanize_time(time_or_str)
+    end
+    inner_span = content_tag(:span, '', :class => 'value-title', :title => encoded_time)
+    content_tag(opts[:tag] || :time, inner_span + humanized_time, :itemprop => 'endDate', :class => 'dtend', :datetime => encoded_time)
+  end
+
+  def category(str, opts = {})
+    content_tag(opts[:tag] || :span, str, :itemprop => 'eventType', :class => 'category')
+  end
+
 end

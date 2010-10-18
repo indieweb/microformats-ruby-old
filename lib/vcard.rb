@@ -1,4 +1,6 @@
 class Microformats::Vcard
+  include Microformats::FormattingHelpers
+
   def initialize
     @default_tag = :span
   end
@@ -56,25 +58,4 @@ class Microformats::Vcard
     content_tag(:a, str, :href => new_url, :type => 'text/directory')
   end
 
-  def content_tag(tag, content, opts={})
-    attrs = opts.inject([]) do |out, tuple|
-      k,v = tuple
-      out << "#{k}='#{v}'"
-    end
-    attr_string = attrs.sort.join(' ')
-    open_tag = attr_string == '' ? tag : "#{tag} #{attr_string}"
-    if [:img].include?(tag)
-      "<#{open_tag} />"
-    else
-      "<#{open_tag}>#{content}</#{tag}>"
-    end
-  end
-
-  def image_tag(src, opts={})
-    if size = opts.delete(:size)
-      opts[:width], opts[:height] = size.split('x')
-    end
-    opts[:src] = src
-    content_tag(:img, nil, opts)
-  end
 end
