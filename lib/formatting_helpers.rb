@@ -21,6 +21,10 @@ module Microformats::FormattingHelpers
     content_tag(:img, nil, opts)
   end
 
+  def concat(str)
+    @template.concat(str)
+  end
+
   def encode_time(t)
     t.strftime("%Y-%m-%dT%H:%M%z").gsub(/00$/, ":00")
   end

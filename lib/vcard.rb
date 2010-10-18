@@ -1,8 +1,15 @@
 class Microformats::Vcard
   include Microformats::FormattingHelpers
 
-  def initialize
+  def initialize(template)
+    @template = template
     @default_tag = :span
+  end
+
+  def run(&block)
+    concat "<div class='vcard' itemscope='itemscope' itemtype='http://data-vocabulary.org/Person'>\n"
+    block.call(self)
+    concat "</div>\n"
   end
 
   def name(str, opts = {})

@@ -1,6 +1,18 @@
 class Microformats::Address
   include Microformats::FormattingHelpers
 
+  def initialize(template)
+    @template = template
+  end
+
+  def run(opts = {}, &block)
+    type = opts[:type] ? self.type(opts[:type]) : nil
+    concat "<div class='adr' itemscope='itemscope' itemtype='http://data-vocabulary.org/Address'>\n"
+    concat type if type
+    block.call(self)
+    concat "</div>\n"
+  end
+
   def type(str, opts = {})
     inner = content_tag(:span, '', :class => 'value-title', :title => str)
     content_tag(:span, inner, :class => 'type')
