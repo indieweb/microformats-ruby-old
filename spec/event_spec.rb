@@ -42,20 +42,20 @@ describe Microformats::Event do
   
   describe "photo" do
     it "should create an image tag using the passed string as the src, adding itemprop photo" do
-      @event.photo("/images/event.png").should == "<img itemprop='photo' src='/images/event.png' />"
+      @event.photo("/images/event.png").should == "<img class='photo' itemprop='photo' src='/images/event.png' />"
     end
     
     it "should use arbitrary html attrs" do
-      e = "<img class='extra' id='my_photo' itemprop='photo' src='/images/event.png' />"
+      e = "<img class='extra photo' id='my_photo' itemprop='photo' src='/images/event.png' />"
       @event.photo("/images/event.png", :class => 'extra', :id => 'my_photo').should == e
     end
     
     it "should use :size option to set width and height" do
-      @event.photo("/images/event.png", :size => "200x100").should == "<img height='100' itemprop='photo' src='/images/event.png' width='200' />"
+      @event.photo("/images/event.png", :size => "200x100").should == "<img class='photo' height='100' itemprop='photo' src='/images/event.png' width='200' />"
     end
     
     it "should pass through options" do
-      @event.photo("/images/event.png", :height => 100, :width => 200).should == "<img height='100' itemprop='photo' src='/images/event.png' width='200' />"
+      @event.photo("/images/event.png", :height => 100, :width => 200).should == "<img class='photo' height='100' itemprop='photo' src='/images/event.png' width='200' />"
     end
   end
   

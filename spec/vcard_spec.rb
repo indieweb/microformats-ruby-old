@@ -77,20 +77,20 @@ describe Microformats::Vcard do
   
   describe "photo" do
     it "should create an image tag using the passed string as the src, adding itemprop photo" do
-      @vcard.photo("/images/me.png").should == "<img itemprop='photo' src='/images/me.png' />"
+      @vcard.photo("/images/me.png").should == "<img class='photo' itemprop='photo' src='/images/me.png' />"
     end
     
     it "should use arbitrary html attrs" do
-      e = "<img class='extra' id='my_photo' itemprop='photo' src='/images/me.png' />"
+      e = "<img class='extra photo' id='my_photo' itemprop='photo' src='/images/me.png' />"
       @vcard.photo("/images/me.png", :class => 'extra', :id => 'my_photo').should == e
     end
     
     it "should use :size option to set width and height" do
-      @vcard.photo("/images/me.png", :size => "200x100").should == "<img height='100' itemprop='photo' src='/images/me.png' width='200' />"
+      @vcard.photo("/images/me.png", :size => "200x100").should == "<img class='photo' height='100' itemprop='photo' src='/images/me.png' width='200' />"
     end
     
     it "should pass through options" do
-      @vcard.photo("/images/me.png", :height => 100, :width => 200).should == "<img height='100' itemprop='photo' src='/images/me.png' width='200' />"
+      @vcard.photo("/images/me.png", :height => 100, :width => 200).should == "<img class='photo' height='100' itemprop='photo' src='/images/me.png' width='200' />"
     end
   end
   

@@ -24,7 +24,7 @@ class Microformats::Event
     if size = opts.delete(:size)
       opts[:width], opts[:height] = size.split('x')
     end
-    content_tag(nil, merge_html_attrs({:tag => :img, :itemprop => 'photo', :src => str}, opts))
+    content_tag(nil, merge_html_attrs({:tag => :img, :class => 'photo', :itemprop => 'photo', :src => str}, opts))
   end
 
   def description(str, opts={})
