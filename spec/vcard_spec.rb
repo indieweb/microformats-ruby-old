@@ -27,6 +27,11 @@ describe Microformats::Vcard do
       @vcard.name("John Doe").should == "<span class='fn' itemprop='name'>John Doe</span>"
     end
     
+    it "should use arbitrary html attrs" do
+      e = "<span class='extra fn' id='my_name' itemprop='name'>John Doe</span>"
+      @vcard.name("John Doe", :class => 'extra', :id => 'my_name').should == e
+    end
+    
     it "should use the given tag" do
       @vcard.name("John Doe", :tag => :strong).should == "<strong class='fn' itemprop='name'>John Doe</strong>"
     end
@@ -35,6 +40,11 @@ describe Microformats::Vcard do
   describe "company" do
     it "should wrap a string with org class, default to span" do
       @vcard.company("Acme Co.").should == "<span class='org' itemprop='affiliation'>Acme Co.</span>"
+    end
+    
+    it "should use arbitrary html attrs" do
+      e = "<span class='extra org' id='my_company' itemprop='affiliation'>Acme Co.</span>"
+      @vcard.company("Acme Co.", :class => 'extra', :id => 'my_company').should == e
     end
     
     it "should use the given tag" do
@@ -51,6 +61,11 @@ describe Microformats::Vcard do
       @vcard.url("http://google.com").should == "<a class='url' href='http://google.com' itemprop='url'>http://google.com</a>"
     end
     
+    it "should use arbitrary html attrs" do
+      e = "<a class='extra url' href='http://google.com' id='my_url' itemprop='url'>http://google.com</a>"
+      @vcard.url("http://google.com", :class => 'extra', :id => 'my_url').should == e
+    end
+    
     it "should use given href" do
       @vcard.url('Google', :href => "http://google.com").should == "<a class='url' href='http://google.com' itemprop='url'>Google</a>"
     end
@@ -65,6 +80,11 @@ describe Microformats::Vcard do
       @vcard.photo("/images/me.png").should == "<img itemprop='photo' src='/images/me.png' />"
     end
     
+    it "should use arbitrary html attrs" do
+      e = "<img class='extra' id='my_photo' itemprop='photo' src='/images/me.png' />"
+      @vcard.photo("/images/me.png", :class => 'extra', :id => 'my_photo').should == e
+    end
+    
     it "should use :size option to set width and height" do
       @vcard.photo("/images/me.png", :size => "200x100").should == "<img height='100' itemprop='photo' src='/images/me.png' width='200' />"
     end
@@ -72,12 +92,16 @@ describe Microformats::Vcard do
     it "should pass through options" do
       @vcard.photo("/images/me.png", :height => 100, :width => 200).should == "<img height='100' itemprop='photo' src='/images/me.png' width='200' />"
     end
-    
   end
   
   describe "phone" do
     it "should wrap string with a tel class" do
       @vcard.phone('123.456.7890').should == "<span class='tel'>123.456.7890</span>"
+    end
+    
+    it "should use arbitrary html attrs" do
+      e = "<span class='extra tel' id='my_phone'>123.456.7890</span>"
+      @vcard.phone('123.456.7890', :class => 'extra', :id => 'my_phone').should == e
     end
     
     it "should add a type span if given" do
@@ -94,6 +118,11 @@ describe Microformats::Vcard do
   describe "email" do
     it "should wrap string with a email class" do
       @vcard.email('john@doe.com').should == "<span class='email'>john@doe.com</span>"
+    end
+    
+    it "should use arbitrary html attrs" do
+      e = "<span class='email extra' id='my_email'>john@doe.com</span>"
+      @vcard.email('john@doe.com', :class => 'extra', :id => 'my_email').should == e
     end
     
     it "should add a type span if given" do
@@ -128,6 +157,11 @@ describe Microformats::Vcard do
     it "should output a link to h2vx.com using the passed url" do
       out = @vcard.download_link('mydomain.com/page')
       out.should == "<a href='http://h2vx.com/vcf/mydomain.com/page' type='text/directory'>Download vCard</a>"
+    end
+    
+    it "should use arbitrary html attrs" do
+      out = @vcard.download_link('mydomain.com/page', :class => 'extra', :id => 'my_link')
+      out.should == "<a class='extra' href='http://h2vx.com/vcf/mydomain.com/page' id='my_link' type='text/directory'>Download vCard</a>"
     end
     
     it "should strip the protocol from a passed url" do
