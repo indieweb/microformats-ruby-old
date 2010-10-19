@@ -40,6 +40,10 @@ describe Microformats::Vcard do
     it "should use the given tag" do
       @vcard.company("Acme Co.", :tag => :strong).should == "<strong class='org' itemprop='affiliation'>Acme Co.</strong>"
     end
+    
+    it "should have fn class if passed :is_company => true" do
+      @vcard.company("Acme Co.", :is_company => true).should == "<span class='fn org' itemprop='affiliation'>Acme Co.</span>"
+    end
   end
   
   describe "url" do

@@ -30,17 +30,29 @@ describe Microformats::Address do
   
   describe "street" do
     it "should wrap the string with street-address" do
-      @address.street("123 Main").should == "<span class='street-address' itemprop='street-address'>123 Main</span>"
+      e = "<span class='street-address' itemprop='street-address'>123 Main</span>"
+      @address.street("123 Main").should == e
+    end
+    
+    it "should use passed html attrs" do
+      e = "<span class='extra street-address' id='my_street' itemprop='street-address'>123 Main</span>"
+      @address.street("123 Main", :class => 'extra', :id => 'my_street').should == e
     end
     
     it "should use the given tag" do
-      @address.street("123 Main", :tag => :strong).should == "<strong class='street-address' itemprop='street-address'>123 Main</strong>"
+      e = "<strong class='street-address' itemprop='street-address'>123 Main</strong>"
+      @address.street("123 Main", :tag => :strong).should == e
     end
   end
   
   describe "city" do
     it "should wrap the string with locality" do
       @address.city("Chicago").should == "<span class='locality' itemprop='locality'>Chicago</span>"
+    end
+
+    it "should use passed html attrs" do
+      e = "<span class='extra locality' id='my_city' itemprop='locality'>Chicago</span>"
+      @address.city("Chicago", :class => 'extra', :id => 'my_city').should == e
     end
     
     it "should use the given tag" do
@@ -53,6 +65,11 @@ describe Microformats::Address do
       @address.state("IL").should == "<span class='region' itemprop='region'>IL</span>"
     end
     
+    it "should use passed html attrs" do
+      e = "<span class='extra region' id='my_state' itemprop='region'>IL</span>"
+      @address.state("IL", :class => 'extra', :id => 'my_state').should == e
+    end
+    
     it "should use the given tag" do
       @address.state("IL", :tag => :strong).should == "<strong class='region' itemprop='region'>IL</strong>"
     end
@@ -63,6 +80,11 @@ describe Microformats::Address do
       @address.zip("60085").should == "<span class='postal-code' itemprop='postal-code'>60085</span>"
     end
     
+    it "should use passed html attrs" do
+      e = "<span class='extra postal-code' id='my_zip' itemprop='postal-code'>60085</span>"
+      @address.zip("60085", :class => 'extra', :id => 'my_zip').should == e
+    end
+    
     it "should use the given tag" do
       @address.zip("60085", :tag => :strong).should == "<strong class='postal-code' itemprop='postal-code'>60085</strong>"
     end
@@ -71,6 +93,11 @@ describe Microformats::Address do
   describe "country" do
     it "should wrap the string with country-name" do
       @address.country("USA").should == "<span class='country-name' itemprop='country-name'>USA</span>"
+    end
+    
+    it "should use passed html attrs" do
+      e = "<span class='country-name extra' id='my_country' itemprop='country-name'>USA</span>"
+      @address.country("USA", :class => 'extra', :id => 'my_country').should == e
     end
     
     it "should use the given tag" do

@@ -20,7 +20,8 @@ class Microformats::Vcard
   end
 
   def company(str, opts = {})
-    content_tag(opts[:tag] || :span, str, :class => 'org', :itemprop => 'affiliation')
+    classes = opts.delete(:is_company) ? 'fn org' : 'org'
+    content_tag(opts[:tag] || :span, str, :class => classes, :itemprop => 'affiliation')
   end
   alias_method :organization, :company
 

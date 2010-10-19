@@ -3,6 +3,7 @@ class Microformats::Address
 
   def initialize(template)
     @template = template
+    @default_tag = :span
   end
 
   def run(opts = {}, &block)
@@ -10,36 +11,72 @@ class Microformats::Address
     opts[:class] = ['adr', opts[:class]].flatten.compact.sort.join(' ')
     opts[:itemscope] = 'itemscope'
     opts[:itemtype] = 'http://data-vocabulary.org/Address'
-    concat_tag(opts.delete(:tag) || :div, opts) do
+    opts[:tag] ||= :div
+    concat_tag(opts) do
       concat type if type
       block.call(self)
     end
   end
 
   def type(str, opts = {})
-    inner = content_tag(:span, '', :class => 'value-title', :title => str)
-    content_tag(:span, inner, :class => 'type')
+    inner = content_tag('', :class => 'value-title', :title => str)
+    content_tag(inner, merge_html_attrs({:class => 'type'}, opts))
   end
 
   def street(str, opts = {})
-    content_tag(opts[:tag] || :span, str, :class => 'street-address', :itemprop => 'street-address')
+    content_tag(str, merge_html_attrs({:class => 'street-address', :itemprop => 'street-address'}, opts))
   end
 
   def city(str, opts = {})
-    content_tag(opts[:tag] || :span, str, :class => 'locality', :itemprop => 'locality')
+    content_tag(str, merge_html_attrs({:class => 'locality', :itemprop => 'locality'}, opts))
   end
 
   def state(str, opts = {})
-    content_tag(opts[:tag] || :span, str, :class => 'region', :itemprop => 'region')
+    content_tag(str, merge_html_attrs({:class => 'region', :itemprop => 'region'}, opts))
   end
 
   def zip(str, opts = {})
-    content_tag(opts[:tag] || :span, str, :class => 'postal-code', :itemprop => 'postal-code')
+    content_tag(str, merge_html_attrs({:class => 'postal-code', :itemprop => 'postal-code'}, opts))
   end
   alias_method :postal_code, :zip
 
   def country(str, opts = {})
-    content_tag(opts[:tag] || :span, str, :class => 'country-name', :itemprop => 'country-name')
+    content_tag(str, merge_html_attrs({:class => 'country-name', :itemprop => 'country-name'}, opts))
+  end
+
+  def content_tag(content, opts={})
+    tag = opts.delete(:tag) || @default_tag
+    attrs = opts.inject([]) do |out, tuple|
+      k,v = tuple
+      out << "#{k}='#{v}'"
+    end
+    attr_string = attrs.sort.join(' ')
+    open_tag = attr_string == '' ? tag : "#{tag} #{attr_string}"
+    if [:img].include?(tag)
+      "<#{open_tag} />"
+    else
+      "<#{open_tag}>#{content}</#{tag}>"
+    end
+  end
+
+  def concat_tag(opts={})
+    tag = opts.delete(:tag) || @default_tag
+    attrs = opts.inject([]) do |out, tuple|
+      k,v = tuple
+      out << "#{k}='#{v}'"
+    end
+    attr_string = attrs.sort.join(' ')
+    open_tag = attr_string == '' ? tag : "#{tag} #{attr_string}"
+    concat "<#{open_tag}>\n"
+    yield
+    concat "</#{tag}>\n"
+  end
+
+  def merge_html_attrs(base_attrs, overriding_attrs)
+    classes = [base_attrs.delete(:class), overriding_attrs.delete(:class)].flatten.compact.sort.join(' ')
+    attrs = base_attrs.merge(overriding_attrs)
+    attrs[:class] = classes
+    attrs
   end
 
 end
