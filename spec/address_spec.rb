@@ -2,7 +2,24 @@ require 'spec_helper'
 
 describe Microformats::Address do
   before(:each) do
-    @address = Microformats::Address.new
+    @template = MockTemplate.new
+    @address = Microformats::Address.new(@template)
+  end
+  
+  describe "run" do
+    it "should wrap the block with an .adr div" do
+      @address.run do |adr|
+        adr.concat "Hello"
+      end
+      @template.output.should == "<div class='adr' itemscope='itemscope' itemtype='http://data-vocabulary.org/Address'>\nHello</div>\n"
+    end
+    
+    it "should add passed attributes to .adr div" do
+      @address.run(:id => 'my_address', :class => 'extra') do |adr|
+        adr.concat "Hello"
+      end
+      @template.output.should == "<div class='adr extra' id='my_address' itemscope='itemscope' itemtype='http://data-vocabulary.org/Address'>\nHello</div>\n"
+    end
   end
   
   describe "type" do

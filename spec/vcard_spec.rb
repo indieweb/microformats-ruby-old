@@ -2,7 +2,24 @@ require 'spec_helper'
 
 describe Microformats::Vcard do
   before(:each) do
-    @vcard = Microformats::Vcard.new
+    @template = MockTemplate.new
+    @vcard = Microformats::Vcard.new(@template)
+  end
+  
+  describe "run" do
+    it "should wrap the block in a .vcard div" do
+      @vcard.run do |card|
+        card.concat "Hello"
+      end
+      @template.output.should == "<div class='vcard' itemscope='itemscope' itemtype='http://data-vocabulary.org/Person'>\nHello</div>\n"
+    end
+    
+    it "should should apply id and extra classes to .vcard div" do
+      @vcard.run(:id => 'my_vcard', :class => 'extra') do |card|
+        card.concat "Hello"
+      end
+      @template.output.should == "<div class='extra vcard' id='my_vcard' itemscope='itemscope' itemtype='http://data-vocabulary.org/Person'>\nHello</div>\n"
+    end
   end
   
   describe "name" do

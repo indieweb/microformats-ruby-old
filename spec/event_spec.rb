@@ -2,7 +2,8 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Microformats::Event do
   before(:each) do
-    @event = Microformats::Event.new
+    @template = MockTemplate.new
+    @event = Microformats::Event.new(@template)
   end
   
   describe "name" do
@@ -97,7 +98,29 @@ describe Microformats::Event do
     end
   end
   
-  # url, description, dtstart - startDate, dtend - endDate, duration, category - eventType, 
-  # geo (latitude, longitude), photo
+  describe "location" do
+    before(:each) do
+      @card = Microformats::Vcard.new(@template)
+      Microformats::Vcard.should_receive(:new).with(@template).and_return(@card)
+    end
+    it "should run the block on a new vcard" do
+      @card.should_receive(:run).with(:class => 'location')
+      @event.location do |card|
+        # won't get run in test because #run is stubbed
+      end
+    end
+    
+    it "should pass along html opts" do
+      @card.should_receive(:run).with(:class => 'extra location', :id => 'my_location')
+      @event.location(:class => 'extra', :id => 'my_location') do |card|
+        # won't get run in test because #run is stubbed
+      end
+    end
+  end
   
+  describe "duration" do
+    it "should output a tag for duration" do
+      pending
+    end
+  end
 end

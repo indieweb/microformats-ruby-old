@@ -6,11 +6,14 @@ class Microformats::Address
   end
 
   def run(opts = {}, &block)
-    type = opts[:type] ? self.type(opts[:type]) : nil
-    concat "<div class='adr' itemscope='itemscope' itemtype='http://data-vocabulary.org/Address'>\n"
-    concat type if type
-    block.call(self)
-    concat "</div>\n"
+    type = opts[:type] ? self.type(opts.delete(:type)) : nil
+    opts[:class] = ['adr', opts[:class]].flatten.compact.sort.join(' ')
+    opts[:itemscope] = 'itemscope'
+    opts[:itemtype] = 'http://data-vocabulary.org/Address'
+    concat_tag(opts.delete(:tag) || :div, opts) do
+      concat type if type
+      block.call(self)
+    end
   end
 
   def type(str, opts = {})

@@ -13,6 +13,18 @@ module Microformats::FormattingHelpers
     end
   end
 
+  def concat_tag(tag, opts={})
+    attrs = opts.inject([]) do |out, tuple|
+      k,v = tuple
+      out << "#{k}='#{v}'"
+    end
+    attr_string = attrs.sort.join(' ')
+    open_tag = attr_string == '' ? tag : "#{tag} #{attr_string}"
+    concat "<#{open_tag}>\n"
+    yield
+    concat "</#{tag}>\n"
+  end
+
   def image_tag(src, opts={})
     if size = opts.delete(:size)
       opts[:width], opts[:height] = size.split('x')

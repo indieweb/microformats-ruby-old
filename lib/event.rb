@@ -1,8 +1,13 @@
 class Microformats::Event
   include Microformats::FormattingHelpers
 
+  def initialize(template)
+    @template = template
+    @default_tag = :span
+  end
+
   def name(str, opts={})
-    content_tag(opts[:tag] || :span, str, :itemprop => 'summary', :class => 'summary')
+    content_tag(opts[:tag] || @default_tag, str, :itemprop => 'summary', :class => 'summary')
   end
 
   def url(str, opts = {})
@@ -20,7 +25,7 @@ class Microformats::Event
   end
 
   def description(str, opts={})
-    content_tag(opts[:tag] || :span, str, :itemprop => 'description', :class => 'description')
+    content_tag(opts[:tag] || @default_tag, str, :itemprop => 'description', :class => 'description')
   end
 
   def starts_at(time_or_str, opts={})
@@ -50,7 +55,13 @@ class Microformats::Event
   end
 
   def category(str, opts = {})
-    content_tag(opts[:tag] || :span, str, :itemprop => 'eventType', :class => 'category')
+    content_tag(opts[:tag] || @default_tag, str, :itemprop => 'eventType', :class => 'category')
+  end
+
+  def location(opts = {}, &block)
+    card = Microformats::Vcard.new(@template)
+    opts[:class] = ['location', opts[:class]].flatten.compact.sort.join(' ')
+    card.run(opts, &block)
   end
 
 end

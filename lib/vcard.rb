@@ -6,10 +6,13 @@ class Microformats::Vcard
     @default_tag = :span
   end
 
-  def run(&block)
-    concat "<div class='vcard' itemscope='itemscope' itemtype='http://data-vocabulary.org/Person'>\n"
-    block.call(self)
-    concat "</div>\n"
+  def run(opts = {}, &block)
+    opts[:class] = ['vcard', opts[:class]].flatten.compact.sort.join(' ')
+    opts[:itemscope] = 'itemscope'
+    opts[:itemtype] = 'http://data-vocabulary.org/Person'
+    concat_tag(opts[:tag] || :div, opts) do
+      block.call(self)
+    end
   end
 
   def name(str, opts = {})
