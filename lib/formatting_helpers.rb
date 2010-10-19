@@ -1,5 +1,6 @@
 module Microformats::FormattingHelpers
-  def content_tag(tag, content, opts={})
+  def content_tag(content, opts={})
+    tag = opts.delete(:tag) || @default_tag
     attrs = opts.inject([]) do |out, tuple|
       k,v = tuple
       out << "#{k}='#{v}'"
@@ -13,7 +14,8 @@ module Microformats::FormattingHelpers
     end
   end
 
-  def concat_tag(tag, opts={})
+  def concat_tag(opts={})
+    tag = opts.delete(:tag) || @default_tag
     attrs = opts.inject([]) do |out, tuple|
       k,v = tuple
       out << "#{k}='#{v}'"
@@ -25,12 +27,11 @@ module Microformats::FormattingHelpers
     concat "</#{tag}>\n"
   end
 
-  def image_tag(src, opts={})
-    if size = opts.delete(:size)
-      opts[:width], opts[:height] = size.split('x')
-    end
-    opts[:src] = src
-    content_tag(:img, nil, opts)
+  def merge_html_attrs(base_attrs, overriding_attrs)
+    classes = [base_attrs.delete(:class), overriding_attrs.delete(:class)].flatten.compact.sort.join(' ')
+    attrs = base_attrs.merge(overriding_attrs)
+    attrs[:class] = classes unless classes == '' # [].join #=> ''
+    attrs
   end
 
   def concat(str)

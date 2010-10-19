@@ -7,55 +7,58 @@ class Microformats::Event
   end
 
   def name(str, opts={})
-    content_tag(opts[:tag] || @default_tag, str, :itemprop => 'summary', :class => 'summary')
+    content_tag(str, merge_html_attrs({:itemprop => 'summary', :class => 'summary'}, opts))
   end
 
   def url(str, opts = {})
     if opts[:href]
-      content_tag(:a, str, :href => opts[:href], :class => 'url', :itemprop => 'url')
+      content_tag(str, merge_html_attrs({:tag => :a, :class => 'url', :itemprop => 'url'}, opts))
     elsif opts[:tag]
-      content_tag(opts[:tag], str, :class => 'url', :itemprop => 'url')
+      content_tag(str, merge_html_attrs({:class => 'url', :itemprop => 'url'}, opts))
     else
-      content_tag(:a, str, :class => 'url', :href => str, :itemprop => 'url')
+      content_tag(str, merge_html_attrs({:tag => :a, :class => 'url', :href => str, :itemprop => 'url'}, opts))
     end
   end
 
   def photo(str, opts = {})
-    image_tag(str, opts.merge(:itemprop => 'photo'))
+    if size = opts.delete(:size)
+      opts[:width], opts[:height] = size.split('x')
+    end
+    content_tag(nil, merge_html_attrs({:tag => :img, :itemprop => 'photo', :src => str}, opts))
   end
 
   def description(str, opts={})
-    content_tag(opts[:tag] || @default_tag, str, :itemprop => 'description', :class => 'description')
+    content_tag(str, merge_html_attrs({:itemprop => 'description', :class => 'description'}, opts))
   end
 
   def starts_at(time_or_str, opts={})
     if time_or_str.is_a?(String)
       time = Time.parse(time_or_str)
       encoded_time = encode_time(time_or_str)
-      humanized_time = opts[:text] || time_or_str
+      humanized_time = opts.delete(:text) || time_or_str
     else
       encoded_time = encode_time(time_or_str)
-      humanized_time = opts[:text] || humanize_time(time_or_str)
+      humanized_time = opts.delete(:text) || humanize_time(time_or_str)
     end
-    inner_span = content_tag(:span, '', :class => 'value-title', :title => encoded_time)
-    content_tag(opts[:tag] || :time, inner_span + humanized_time, :itemprop => 'startDate', :class => 'dtstart', :datetime => encoded_time)
+    inner_span = content_tag('', :class => 'value-title', :title => encoded_time)
+    content_tag(inner_span + humanized_time, merge_html_attrs({:tag => :time, :itemprop => 'startDate', :class => 'dtstart', :datetime => encoded_time}, opts))
   end
 
   def ends_at(time_or_str, opts={})
     if time_or_str.is_a?(String)
       time = Time.parse(time_or_str)
       encoded_time = encode_time(time_or_str)
-      humanized_time = opts[:text] || time_or_str
+      humanized_time = opts.delete(:text) || time_or_str
     else
       encoded_time = encode_time(time_or_str)
-      humanized_time = opts[:text] || humanize_time(time_or_str)
+      humanized_time = opts.delete(:text) || humanize_time(time_or_str)
     end
-    inner_span = content_tag(:span, '', :class => 'value-title', :title => encoded_time)
-    content_tag(opts[:tag] || :time, inner_span + humanized_time, :itemprop => 'endDate', :class => 'dtend', :datetime => encoded_time)
+    inner_span = content_tag('', :class => 'value-title', :title => encoded_time)
+    content_tag(inner_span + humanized_time, merge_html_attrs({:tag => :time, :itemprop => 'endDate', :class => 'dtend', :datetime => encoded_time}, opts))
   end
 
   def category(str, opts = {})
-    content_tag(opts[:tag] || @default_tag, str, :itemprop => 'eventType', :class => 'category')
+    content_tag(str, merge_html_attrs({:itemprop => 'eventType', :class => 'category'}, opts))
   end
 
   def location(opts = {}, &block)

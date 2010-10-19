@@ -11,6 +11,11 @@ describe Microformats::Event do
       @event.name("My Event").should == "<span class='summary' itemprop='summary'>My Event</span>"
     end
     
+    it "should use arbitrary html attrs" do
+      e = "<span class='extra summary' id='my_event' itemprop='summary'>My Event</span>"
+      @event.name("My Event", :class => 'extra', :id => 'my_event').should == e
+    end
+    
     it "should use the given tag" do
       @event.name("My Event", :tag => :strong).should == "<strong class='summary' itemprop='summary'>My Event</strong>"
     end
@@ -19,6 +24,11 @@ describe Microformats::Event do
   describe "url" do
     it "should default to a tag with url class, using the URL for text and href" do
       @event.url("http://google.com").should == "<a class='url' href='http://google.com' itemprop='url'>http://google.com</a>"
+    end
+    
+    it "should take arbitrary html attrs" do
+      e = "<a class='extra url' href='http://google.com' id='my_url' itemprop='url'>http://google.com</a>"
+      @event.url("http://google.com", :class => 'extra', :id => 'my_url').should == e
     end
     
     it "should use given href" do
@@ -35,6 +45,11 @@ describe Microformats::Event do
       @event.photo("/images/event.png").should == "<img itemprop='photo' src='/images/event.png' />"
     end
     
+    it "should use arbitrary html attrs" do
+      e = "<img class='extra' id='my_photo' itemprop='photo' src='/images/event.png' />"
+      @event.photo("/images/event.png", :class => 'extra', :id => 'my_photo').should == e
+    end
+    
     it "should use :size option to set width and height" do
       @event.photo("/images/event.png", :size => "200x100").should == "<img height='100' itemprop='photo' src='/images/event.png' width='200' />"
     end
@@ -49,6 +64,11 @@ describe Microformats::Event do
       @event.description("My Event").should == "<span class='description' itemprop='description'>My Event</span>"
     end
     
+    it "should use arbitrary html attrs" do
+      e = "<span class='description extra' id='my_desc' itemprop='description'>My Event</span>"
+      @event.description("My Event", :class => 'extra', :id => 'my_desc').should == e
+    end
+    
     it "should use the given tag" do
       @event.description("My Event", :tag => :strong).should == "<strong class='description' itemprop='description'>My Event</strong>"
     end
@@ -58,6 +78,12 @@ describe Microformats::Event do
     it "should output the time wrapped in a time tag with encoded time" do
       t = Time.local(2010, 10, 20, 19, 30) # Oct 20, 2010 at 7:30pm
       @event.starts_at(t).should == "<time class='dtstart' datetime='2010-10-20T19:30-05:00' itemprop='startDate'><span class='value-title' title='2010-10-20T19:30-05:00'></span>Oct 20, 2010 at 7:30PM</time>"
+    end
+    
+    it "should use arbitrary html attrs" do
+      t = Time.local(2010, 10, 20, 19, 30) # Oct 20, 2010 at 7:30pm
+      e = "<time class='dtstart extra' datetime='2010-10-20T19:30-05:00' id='my_start' itemprop='startDate'><span class='value-title' title='2010-10-20T19:30-05:00'></span>Oct 20, 2010 at 7:30PM</time>"
+      @event.starts_at(t, :class => 'extra', :id => 'my_start').should == e
     end
     
     it "should accept a datetime string instead of a time object" do
@@ -77,6 +103,12 @@ describe Microformats::Event do
       @event.ends_at(t).should == "<time class='dtend' datetime='2010-10-20T19:30-05:00' itemprop='endDate'><span class='value-title' title='2010-10-20T19:30-05:00'></span>Oct 20, 2010 at 7:30PM</time>"
     end
     
+    it "should use arbitrary html attrs" do
+      t = Time.local(2010, 10, 20, 19, 30) # Oct 20, 2010 at 7:30pm
+      e = "<time class='dtend extra' datetime='2010-10-20T19:30-05:00' id='my_end' itemprop='endDate'><span class='value-title' title='2010-10-20T19:30-05:00'></span>Oct 20, 2010 at 7:30PM</time>"
+      @event.ends_at(t, :class => 'extra', :id => 'my_end').should == e
+    end
+    
     it "should accept a datetime string instead of a time object" do
       pending
       @event.ends_at("October 20, 2010 7:30pm").should == "<time class='dtend' datetime='2010-10-20T19:30-05:00' itemprop='endDate'><span class='value-title' title='2010-10-20T19:30-05:00'></span>October 20, 2010 7:30pm</time>"
@@ -91,6 +123,11 @@ describe Microformats::Event do
   describe "category" do
     it "should wrap the string with category class and eventType itemprop" do
       @event.category("Geekfest").should == "<span class='category' itemprop='eventType'>Geekfest</span>"
+    end
+    
+    it "should should use arbitrary html attrs" do
+      e = "<span class='category extra' id='my_category' itemprop='eventType'>Geekfest</span>"
+      @event.category("Geekfest", :class => 'extra', :id => 'my_category').should == e
     end
     
     it "should use the given tag" do
