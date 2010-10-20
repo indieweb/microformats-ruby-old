@@ -9,11 +9,13 @@ module Microformats::Helpers
     address.run(opts, &block)
   end
 
-  def vevent
-
+  def vevent(opts = {}, &block)
+    event = Microformats::Event.new(self)
+    event.run(opts, &block)
   end
 
-  def vcalendar
-
+  def vcalendar(opts = {}, &block)
+    cal = Microformats::Calendar.new(self)
+    cal.run(opts, &block)
   end
 end
