@@ -63,7 +63,7 @@ class Microformats::Event
 
   def location(opts = {}, &block)
     card = Microformats::Vcard.new(@template)
-    opts[:class] = ['location', opts[:class]].flatten.compact.sort.join(' ')
+    opts[:class] = combine_class_names('location', opts[:class])
     card.run(opts, &block)
   end
 

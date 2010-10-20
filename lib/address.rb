@@ -8,7 +8,7 @@ class Microformats::Address
 
   def run(opts = {}, &block)
     type = opts[:type] ? self.type(opts.delete(:type)) : nil
-    opts[:class] = ['adr', opts[:class]].flatten.compact.sort.join(' ')
+    opts[:class] = combine_class_names('adr', opts[:class])
     opts[:itemscope] = 'itemscope'
     opts[:itemtype] = 'http://data-vocabulary.org/Address'
     opts[:tag] ||= :div

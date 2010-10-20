@@ -7,7 +7,7 @@ class Microformats::Vcard
   end
 
   def run(opts = {}, &block)
-    opts[:class] = ['vcard', opts[:class]].flatten.compact.sort.join(' ')
+    opts[:class] = combine_class_names('vcard', opts[:class])
     opts[:itemscope] = 'itemscope'
     opts[:itemtype] = 'http://data-vocabulary.org/Person'
     opts[:tag] ||= :div
