@@ -1,3 +1,4 @@
+require 'rubygems'
 require File.join(File.dirname(__FILE__), '..', 'lib', 'microformats.rb')
 
 # We need to be able to test what Vcard is outputting using the

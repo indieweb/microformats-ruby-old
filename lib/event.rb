@@ -34,7 +34,7 @@ class Microformats::Event
   def starts_at(time_or_str, opts={})
     if time_or_str.is_a?(String)
       time = Time.parse(time_or_str)
-      encoded_time = encode_time(time_or_str)
+      encoded_time = encode_time(time)
       humanized_time = opts.delete(:text) || time_or_str
     else
       encoded_time = encode_time(time_or_str)
@@ -47,7 +47,7 @@ class Microformats::Event
   def ends_at(time_or_str, opts={})
     if time_or_str.is_a?(String)
       time = Time.parse(time_or_str)
-      encoded_time = encode_time(time_or_str)
+      encoded_time = encode_time(time)
       humanized_time = opts.delete(:text) || time_or_str
     else
       encoded_time = encode_time(time_or_str)

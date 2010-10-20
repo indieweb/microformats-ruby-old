@@ -87,7 +87,6 @@ describe Microformats::Event do
     end
     
     it "should accept a datetime string instead of a time object" do
-      pending
       @event.starts_at("October 20, 2010 7:30pm").should == "<time class='dtstart' datetime='2010-10-20T19:30-05:00' itemprop='startDate'><span class='value-title' title='2010-10-20T19:30-05:00'></span>October 20, 2010 7:30pm</time>"
     end
     
@@ -110,7 +109,6 @@ describe Microformats::Event do
     end
     
     it "should accept a datetime string instead of a time object" do
-      pending
       @event.ends_at("October 20, 2010 7:30pm").should == "<time class='dtend' datetime='2010-10-20T19:30-05:00' itemprop='endDate'><span class='value-title' title='2010-10-20T19:30-05:00'></span>October 20, 2010 7:30pm</time>"
     end
     
@@ -154,10 +152,5 @@ describe Microformats::Event do
       end
     end
   end
-  
-  describe "duration" do
-    it "should output a tag for duration" do
-      pending
-    end
-  end
+
 end
