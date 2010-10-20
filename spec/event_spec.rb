@@ -6,6 +6,22 @@ describe Microformats::Event do
     @event = Microformats::Event.new(@template)
   end
   
+  describe "run" do
+    it "should wrap the block with a .vevent div" do
+      @event.run do |event|
+        event.concat "Hello"
+      end
+      @template.output.should == "<div class='vevent' itemscope='itemscope' itemtype='http://data-vocabulary.org/Event'>\nHello</div>\n"
+    end
+    
+    it "should add passed attributes to .vevent element" do
+      @event.run(:id => 'my_event', :class => 'extra', :tag => 'section') do |event|
+        event.concat "Hello"
+      end
+      @template.output.should == "<section class='extra vevent' id='my_event' itemscope='itemscope' itemtype='http://data-vocabulary.org/Event'>\nHello</section>\n"
+    end
+  end
+  
   describe "name" do
     it "should wrap the string with summary" do
       @event.name("My Event").should == "<span class='summary' itemprop='summary'>My Event</span>"

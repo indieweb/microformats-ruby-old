@@ -6,6 +6,16 @@ class Microformats::Event
     @default_tag = :span
   end
 
+  def run(opts = {}, &block)
+    opts[:class] = combine_class_names('vevent', opts[:class])
+    opts[:itemscope] = 'itemscope'
+    opts[:itemtype] = 'http://data-vocabulary.org/Event'
+    opts[:tag] ||= :div
+    concat_tag(opts) do
+      block.call(self)
+    end
+  end
+
   def name(str, opts={})
     content_tag(str, merge_html_attrs({:itemprop => 'summary', :class => 'summary'}, opts))
   end

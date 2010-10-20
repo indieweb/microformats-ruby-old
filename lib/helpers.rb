@@ -4,9 +4,16 @@ module Microformats::Helpers
     card.run(&block)
   end
 
-  def vcard_address(opts = {}, &block)
+  def vaddress(opts = {}, &block)
     address = Microformats::Address.new(self)
     address.run(opts, &block)
   end
 
+  def vevent
+
+  end
+
+  def vcalendar
+
+  end
 end
