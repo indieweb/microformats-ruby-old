@@ -8,8 +8,8 @@ module Microformats::Helpers
   # Creates a vCard with the given options and a block.
   #
   # OPTIONS:
-  # :tag - The HTML wrapper element (defaults to :div)
-  # Any other passed options will be treated as HTML attributes.
+  # * :tag - The HTML wrapper element (defaults to :div)
+  # * Any other passed options will be treated as HTML attributes.
   #
   # EXAMPLE:
   #   <% vcard :id => 'my_vcard' do |card| %>
@@ -24,9 +24,9 @@ module Microformats::Helpers
   # Creates a vAddress with the given options and a block.
   #
   # OPTIONS:
-  # :type - A string that specifies the type of address('home', 'work', etc)
-  # :tag - The HTML wrapper element (defaults to :div)
-  # Any other passed options will be treated as HTML attributes.
+  # * :type - A string that specifies the type of address('home', 'work', etc)
+  # * :tag - The HTML wrapper element (defaults to :div)
+  # * Any other passed options will be treated as HTML attributes.
   #
   # EXAMPLE:
   #   <% vaddress :type => 'work', :id => 'my_adr' do |adr| %>
@@ -41,8 +41,8 @@ module Microformats::Helpers
   # Creates a vEvent with the given options and a block.
   #
   # OPTIONS:
-  # :tag - The HTML wrapper element (defaults to :div)
-  # Any other passed options will be treated as HTML attributes.
+  # * :tag - The HTML wrapper element (defaults to :div)
+  # * Any other passed options will be treated as HTML attributes.
   #
   # EXAMPLE:
   #   <% vevent :id => 'my_event' do |event| %>
@@ -57,8 +57,8 @@ module Microformats::Helpers
   # Creates a vCalendar with the given options and a block.
   #
   # OPTIONS:
-  # :tag - The HTML wrapper element (defaults to :div)
-  # Any other passed options will be treated as HTML attributes.
+  # * :tag - The HTML wrapper element (defaults to :div)
+  # * Any other passed options will be treated as HTML attributes.
   #
   # EXAMPLE:
   #   <% vcalendar :id => 'my_cal' do |cal| %>

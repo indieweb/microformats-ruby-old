@@ -23,8 +23,8 @@ class Microformats::Vcard
   # Marks up a person's name.
   #
   # OPTIONS:
-  # :tag - The HTML wrapper element (defaults to :span)
-  # Any other passed options will be treated as HTML attributes.
+  # * :tag - The HTML wrapper element (defaults to :span)
+  # * Any other passed options will be treated as HTML attributes.
   #
   def name(str, opts = {})
     content_tag(str, merge_html_attrs({:class => 'fn', :itemprop => 'name'}, opts))
@@ -35,9 +35,9 @@ class Microformats::Vcard
   # the :is_company option to true.
   #
   # OPTIONS:
-  # :is_company - Boolean, true if this is a company vCard (defaults to false)
-  # :tag - The HTML wrapper element (defaults to :span)
-  # Any other passed options will be treated as HTML attributes.
+  # * :is_company - Boolean, true if this is a company vCard (defaults to false)
+  # * :tag - The HTML wrapper element (defaults to :span)
+  # * Any other passed options will be treated as HTML attributes.
   #
   def company(str, opts = {})
     classes = opts.delete(:is_company) ? 'fn org' : 'org'
@@ -50,9 +50,9 @@ class Microformats::Vcard
   # is passed, then the string argument is treated as text.
   #
   # OPTIONS:
-  # :href - If passed, the string argument will be treated as the text node.
-  # :tag - The HTML wrapper element (defaults to :span)
-  # Any other passed options will be treated as HTML attributes.
+  # * :href - If passed, the string argument will be treated as the text node.
+  # * :tag - The HTML wrapper element (defaults to :span)
+  # * Any other passed options will be treated as HTML attributes.
   #
   # EXAMPLES:
   #   card.url('http://google.com') #=> <a class='url' href='http://google.com' itemprop='url'>http://google.com</a>
@@ -72,8 +72,8 @@ class Microformats::Vcard
   # Marks up the vCard photo as an <img> tag. Takes the image URL as the first argument.
   #
   # OPTIONS
-  # :size - Pass a string with WIDTHxHEIGHT like "200x100" in lieu of the :width and :height options.
-  # Any other passed options will be treated as HTML attributes.
+  # * :size - Pass a string with WIDTHxHEIGHT like "200x100" in lieu of the :width and :height options.
+  # * Any other passed options will be treated as HTML attributes.
   #
   def photo(str, opts = {})
     if size = opts.delete(:size)
@@ -85,9 +85,9 @@ class Microformats::Vcard
   # Marks up a phone number, takes the phone number as a string.
   #
   # OPTIONS
-  # :type - A string that specifies the type of phone number ('home', 'work', etc)
-  # :tag - The HTML wrapper element (defaults to :span)
-  # Any other passed options will be treated as HTML attributes.
+  # * :type - A string that specifies the type of phone number ('home', 'work', etc)
+  # * :tag - The HTML wrapper element (defaults to :span)
+  # * Any other passed options will be treated as HTML attributes.
   #
   def phone(str, opts = {})
     type = if opts[:type].to_s != ''
@@ -102,9 +102,9 @@ class Microformats::Vcard
   # Marks up an email address, takes the email as a string.
   #
   # OPTIONS
-  # :type - A string that specifies the type of phone number ('home', 'work', etc)
-  # :tag - The HTML wrapper element (defaults to :a)
-  # Any other passed options will be treated as HTML attributes.
+  # * :type - A string that specifies the type of phone number ('home', 'work', etc)
+  # * :tag - The HTML wrapper element (defaults to :a)
+  # * Any other passed options will be treated as HTML attributes.
   #
   def email(str, opts = {})
     opts[:tag] ||= :a
@@ -121,13 +121,13 @@ class Microformats::Vcard
     end
   end
 
+  # Accepts latitude and longitude as arguments. It will only output a
+  # visible text node if you provide the :text option.
+  #
+  # OPTIONS
+  # * :text - String, the text will be be displayed inside the 'geo' wrapper
+  #
   def coordinates(lat, lng, opts = {})
-    # <span class='geo' itemprop='geo' itemscope='itemscope' itemtype='http://data-vocabulary.org/Geo'>
-    # <meta content='37.774929' itemprop='latitude'></meta>
-    # <meta content='-122.419416' itemprop='longitude'></meta>
-    # <span class='latitude'><span class='value-title' title='37.774929'></span></span>
-    # <span class='longitude'><span class='value-title' title='-122.419416'></span></span>
-    # </span>
     lat_meta = content_tag('', :tag => :meta, :itemprop => 'latitude', :content => lat)
     lng_meta = content_tag('', :tag => :meta, :itemprop => 'longitude', :content => lng)
     lat_span = content_tag(content_tag('', :class => 'value-title', :title => lat), :class => 'latitude')
@@ -136,12 +136,35 @@ class Microformats::Vcard
     content_tag(lat_meta + lng_meta + lat_span + lng_span + text, :class => 'geo', :itemprop => 'geo', :itemscope => 'itemscope', :itemtype => 'http://data-vocabulary.org/Geo')
   end
 
+  # Outputs a link to h2vx.com that will let the user download the vcard
+  # at the passed URL.
+  #
+  # OPTIONS
+  # * :text - The link text (default is "Download vCard")
+  # * Any other passed options will be treated as HTML attributes.
+  #
+  # EXAMPLE
+  #   <%# In Rails, request.request_uri returns the URL of this page %>
+  #   <%= card.download_link request.request_uri %>
+  #
   def download_link(url, opts = {})
     str = opts.delete(:text) || "Download vCard"
     new_url = "http://h2vx.com/vcf/" + url.gsub("http://", '')
     content_tag(str, merge_html_attrs({:tag => :a, :href => new_url, :type => 'text/directory'}, opts))
   end
 
+  # Opens a new block for a nested vAddress.
+  #
+  # OPTIONS:
+  # * :type - A string that specifies the type of address('home', 'work', etc)
+  # * :tag - The HTML wrapper element (defaults to :div)
+  # * Any other passed options will be treated as HTML attributes.
+  #
+  # EXAMPLE:
+  #   <% card.address :type => 'work', :id => 'my_adr' do |adr| %>
+  #     I live at <%= adr.street "123 Main St" %>.
+  #   <% end %>
+  #
   def address(opts = {}, &block)
     adr = Microformats::Address.new(@template)
     adr.run(opts, &block)
