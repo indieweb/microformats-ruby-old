@@ -1,11 +1,15 @@
 class Microformats::Vcard
   include Microformats::FormattingHelpers
 
+  # You can directly initialize and runthis class, but it's easier
+  # to use the Microformats::Helpers#vcard helper method.
   def initialize(template)
     @template = template
     @default_tag = :span
   end
 
+  # You can directly initialize and runthis class, but it's easier
+  # to use the Microformats::Helpers#vcard helper method.
   def run(opts = {}, &block)
     opts[:class] = combine_class_names('vcard', opts[:class])
     opts[:itemscope] = 'itemscope'
@@ -16,16 +20,45 @@ class Microformats::Vcard
     end
   end
 
+  # Marks up a person's name.
+  #
+  # OPTIONS:
+  # :tag - The HTML wrapper element (defaults to :span)
+  # Any other passed options will be treated as HTML attributes.
+  #
   def name(str, opts = {})
     content_tag(str, merge_html_attrs({:class => 'fn', :itemprop => 'name'}, opts))
   end
 
+  # Marks up a company name. If this vCard represents a company
+  # rather than an individual person that works at a company, set
+  # the :is_company option to true.
+  #
+  # OPTIONS:
+  # :is_company - Boolean, true if this is a company vCard (defaults to false)
+  # :tag - The HTML wrapper element (defaults to :span)
+  # Any other passed options will be treated as HTML attributes.
+  #
   def company(str, opts = {})
     classes = opts.delete(:is_company) ? 'fn org' : 'org'
     content_tag(str, merge_html_attrs({:class => classes, :itemprop => 'affiliation'}, opts))
   end
   alias_method :organization, :company
 
+  # Marks up the person's URL. By default, it will output an <a> tag using
+  # the passed in string as both the href and the text. If the :href option
+  # is passed, then the string argument is treated as text.
+  #
+  # OPTIONS:
+  # :href - If passed, the string argument will be treated as the text node.
+  # :tag - The HTML wrapper element (defaults to :span)
+  # Any other passed options will be treated as HTML attributes.
+  #
+  # EXAMPLES:
+  #   card.url('http://google.com') #=> <a class='url' href='http://google.com' itemprop='url'>http://google.com</a>
+  #   card.url('Google', :href => 'http://google.com') #=> <a class='url' href='http://google.com' itemprop='url'>Google</a>
+  #   card.url('http://google.com', :tag => :span) #=> <span class='url' itemprop='url'>http://google.com</span>
+  #
   def url(str, opts = {})
     if opts[:href]
       content_tag(str, merge_html_attrs({:tag => :a, :class => 'url', :itemprop => 'url'}, opts))
@@ -36,6 +69,12 @@ class Microformats::Vcard
     end
   end
 
+  # Marks up the vCard photo as an <img> tag. Takes the image URL as the first argument.
+  #
+  # OPTIONS
+  # :size - Pass a string with WIDTHxHEIGHT like "200x100" in lieu of the :width and :height options.
+  # Any other passed options will be treated as HTML attributes.
+  #
   def photo(str, opts = {})
     if size = opts.delete(:size)
       opts[:width], opts[:height] = size.split('x')
@@ -43,6 +82,13 @@ class Microformats::Vcard
     content_tag(nil, merge_html_attrs({:tag => :img, :class => 'photo', :itemprop => 'photo', :src => str}, opts))
   end
 
+  # Marks up a phone number, takes the phone number as a string.
+  #
+  # OPTIONS
+  # :type - A string that specifies the type of phone number ('home', 'work', etc)
+  # :tag - The HTML wrapper element (defaults to :span)
+  # Any other passed options will be treated as HTML attributes.
+  #
   def phone(str, opts = {})
     type = if opts[:type].to_s != ''
       type_inner_span = content_tag('', :class => 'value-title', :title => opts.delete(:type))
@@ -53,6 +99,13 @@ class Microformats::Vcard
     content_tag(type + str, merge_html_attrs({:class => 'tel'}, opts))
   end
 
+  # Marks up an email address, takes the email as a string.
+  #
+  # OPTIONS
+  # :type - A string that specifies the type of phone number ('home', 'work', etc)
+  # :tag - The HTML wrapper element (defaults to :a)
+  # Any other passed options will be treated as HTML attributes.
+  #
   def email(str, opts = {})
     opts[:tag] ||= :a
     type = if opts[:type].to_s != ''

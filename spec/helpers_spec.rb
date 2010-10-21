@@ -19,6 +19,15 @@ describe Microformats::Helpers do
       end
       @template.output.should == "<div class='vcard' itemscope='itemscope' itemtype='http://data-vocabulary.org/Person'>\n</div>\n"
     end
+    
+    it "should use passed html attrs" do
+      @template.should_receive(:do_something)
+      @template.vcard(:class => 'extra', :id => 'my_card') do |card|
+        card.is_a?(Microformats::Vcard).should be_true
+        @template.do_something
+      end
+      @template.output.should == "<div class='extra vcard' id='my_card' itemscope='itemscope' itemtype='http://data-vocabulary.org/Person'>\n</div>\n"
+    end
   end
   
   describe "vaddress" do
@@ -29,6 +38,14 @@ describe Microformats::Helpers do
           @template.do_something
         end
         @template.output.should == "<div class='adr' itemscope='itemscope' itemtype='http://data-vocabulary.org/Address'>\n<span class='type'><span class='value-title' title='work'></span></span></div>\n"
+      end
+      
+      it "should use passed html attrs" do
+        @template.should_receive(:do_something)
+        @template.vaddress :type => 'work', :class => 'extra', :id => 'my_address' do
+          @template.do_something
+        end
+        @template.output.should == "<div class='adr extra' id='my_address' itemscope='itemscope' itemtype='http://data-vocabulary.org/Address'>\n<span class='type'><span class='value-title' title='work'></span></span></div>\n"
       end
     end
     
@@ -41,16 +58,6 @@ describe Microformats::Helpers do
         end
         @template.output.should == "<div class='adr' itemscope='itemscope' itemtype='http://data-vocabulary.org/Address'>\n</div>\n"
       end
-    end
-  end
-  
-  describe "vevent" do
-    it "should wrap a block in a vevent div" do
-      @template.should_receive(:do_something)
-      @template.vcard do
-        @template.do_something
-      end
-      @template.output.should == "<div class='vcard' itemscope='itemscope' itemtype='http://data-vocabulary.org/Person'>\n</div>\n"
     end
   end
   
