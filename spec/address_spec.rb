@@ -26,6 +26,10 @@ describe Microformats::Address do
     it "should output the type string as a hidden value" do
       @address.type('home').should == "<span class='type'><span class='value-title' title='home'></span></span>"
     end
+    
+    it "should include text passed with :text option" do
+      @address.type('home', :text => "Where I Live").should == "<span class='type'><span class='value-title' title='home'></span>Where I Live</span>"
+    end
   end
   
   describe "street" do

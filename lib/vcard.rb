@@ -10,6 +10,11 @@ class Microformats::Vcard
 
   # You can directly initialize and runthis class, but it's easier
   # to use the Microformats::Helpers#vcard helper method.
+  #
+  # OPTIONS:
+  # * :tag - The HTML wrapper element (defaults to :div)
+  # * Any other passed options will be treated as HTML attributes.
+  #
   def run(opts = {}, &block)
     opts[:class] = combine_class_names('vcard', opts[:class])
     opts[:itemscope] = 'itemscope'

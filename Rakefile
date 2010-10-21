@@ -15,12 +15,9 @@ Spec::Rake::SpecTask.new do |t|
 end
 
 namespace :doc do
-  task :default => :gem
-
   desc "Generate documentation for the gem."
   Rake::RDocTask.new("gem") { |rdoc|
     rdoc.rdoc_dir = 'doc'
-    # rdoc.template = ENV['template'] if ENV['template']
     rdoc.title    = "Microformats"
     rdoc.options << '--line-numbers' << '--inline-source'
     rdoc.options << '--charset' << 'utf-8'
