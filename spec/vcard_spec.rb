@@ -116,28 +116,28 @@ describe Microformats::Vcard do
   end
   
   describe "email" do
-    it "should wrap string with a email class" do
-      @vcard.email('john@doe.com').should == "<span class='email'>john@doe.com</span>"
+    it "should use mailto and default to 'a' tag" do
+      out = @vcard.email('john@doe.com')
+      out.should == "<a class='email' href='mailto:john@doe.com'>john@doe.com</a>"
+    end
+    
+    it "should wrap string with passed tag" do
+      @vcard.email('john@doe.com', :tag => :span).should == "<span class='email'>john@doe.com</span>"
     end
     
     it "should use arbitrary html attrs" do
-      e = "<span class='email extra' id='my_email'>john@doe.com</span>"
+      e = "<a class='email extra' href='mailto:john@doe.com' id='my_email'>john@doe.com</a>"
       @vcard.email('john@doe.com', :class => 'extra', :id => 'my_email').should == e
     end
     
     it "should add a type span if given" do
       out = @vcard.email('john@doe.com', :type => 'work')
-      out.should == "<span class='email'><span class='type'><span class='value-title' title='work'></span></span>john@doe.com</span>"
+      out.should == "<a class='email' href='mailto:john@doe.com'><span class='type'><span class='value-title' title='work'></span></span>john@doe.com</a>"
     end
     
     it "should use the given tag" do
       out = @vcard.email('john@doe.com', :type => 'work', :tag => :strong)
       out.should == "<strong class='email'><span class='type'><span class='value-title' title='work'></span></span>john@doe.com</strong>"
-    end
-    
-    it "should use mailto if using an 'a' tag" do
-      out = @vcard.email('john@doe.com', :type => 'work', :tag => :a)
-      out.should == "<a class='email' href='mailto:john@doe.com'><span class='type'><span class='value-title' title='work'></span></span>john@doe.com</a>"
     end
   end
   
@@ -172,6 +172,27 @@ describe Microformats::Vcard do
     it "should use :text option as text node if present" do
       out = @vcard.download_link('mydomain.com/page', :text => "Download Me Now")
       out.should == "<a href='http://h2vx.com/vcf/mydomain.com/page' type='text/directory'>Download Me Now</a>"
+    end
+  end
+  
+  describe "address" do
+    before(:each) do
+      @adr = Microformats::Address.new(@template)
+      Microformats::Address.should_receive(:new).with(@template).and_return(@adr)
+    end
+    
+    it "should run the block on a new vaddress" do
+      @adr.should_receive(:run)
+      @vcard.address do |adr|
+        # won't get run in test because #run is stubbed
+      end
+    end
+    
+    it "should pass along html opts" do
+      @adr.should_receive(:run).with(:class => 'extra', :id => 'my_address')
+      @vcard.address(:class => 'extra', :id => 'my_address') do |adr|
+        # won't get run in test because #run is stubbed
+      end
     end
   end
 end

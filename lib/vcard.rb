@@ -54,6 +54,7 @@ class Microformats::Vcard
   end
 
   def email(str, opts = {})
+    opts[:tag] ||= :a
     type = if opts[:type].to_s != ''
       type_inner_span = content_tag('', :class => 'value-title', :title => opts.delete(:type))
       content_tag(type_inner_span, :class => 'type')
@@ -88,4 +89,8 @@ class Microformats::Vcard
     content_tag(str, merge_html_attrs({:tag => :a, :href => new_url, :type => 'text/directory'}, opts))
   end
 
+  def address(opts = {}, &block)
+    adr = Microformats::Address.new(@template)
+    adr.run(opts, &block)
+  end
 end
