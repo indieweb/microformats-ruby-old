@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'microformats'
-  s.version = '0.2'
+  s.version = '0.3'
   s.author = 'Chris Powers'
   s.date = "2010-09-11"
   s.homepage = 'http://github.com/chrisjpowers/microformats'

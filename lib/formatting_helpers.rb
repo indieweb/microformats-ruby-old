@@ -1,5 +1,8 @@
-module Microformats::FormattingHelpers
-  def content_tag(content, opts={})
+# These are all internal methods used for formatting, no need
+# to use any of them explicitly.
+#
+module Microformats::FormattingHelpers # :nodoc:
+  def content_tag(content, opts={}) # :nodoc:
     tag = opts.delete(:tag) || @default_tag
     attrs = opts.inject([]) do |out, tuple|
       k,v = tuple
@@ -15,7 +18,7 @@ module Microformats::FormattingHelpers
     end
   end
 
-  def concat_tag(opts={})
+  def concat_tag(opts={}) # :nodoc:
     tag = opts.delete(:tag) || @default_tag
     attrs = opts.inject([]) do |out, tuple|
       k,v = tuple
@@ -28,26 +31,26 @@ module Microformats::FormattingHelpers
     concat "</#{tag}>\n"
   end
 
-  def merge_html_attrs(base_attrs, overriding_attrs)
+  def merge_html_attrs(base_attrs, overriding_attrs) # :nodoc:
     classes = combine_class_names(base_attrs.delete(:class), overriding_attrs.delete(:class))
     attrs = base_attrs.merge(overriding_attrs)
     attrs[:class] = classes unless classes == ''
     attrs
   end
 
-  def concat(str)
+  def concat(str) # :nodoc:
     @template.concat(str)
   end
 
-  def encode_time(t)
+  def encode_time(t) # :nodoc:
     t.strftime("%Y-%m-%dT%H:%M%z").gsub(/00$/, ":00")
   end
 
-  def humanize_time(t)
+  def humanize_time(t) # :nodoc:
     t.strftime("%b %d, %Y at %I:%M%p").gsub(/\s0/, ' ')
   end
 
-  def combine_class_names(*classes)
+  def combine_class_names(*classes) # :nodoc:
     str = classes.flatten.compact.sort.join(' ').gsub(/\s+/, ' ')
     (str =~ /\w/) ? str : nil
   end
